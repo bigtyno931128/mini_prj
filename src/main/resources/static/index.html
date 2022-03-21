@@ -1,0 +1,244 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+
+  <title>게시판</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&amp;display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Gowun Dodum', sans-serif;
+    }
+
+    .mytitle {
+      width: 100%;
+      height: 250px;
+
+      background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://movie-phinf.pstatic.net/20210715_95/1626338192428gTnJl_JPEG/movie_image.jpg');
+      background-position: center;
+      background-size: cover;
+
+      color: white;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mytitle > button {
+      width: 200px;
+      height: 50px;
+
+      background-color: transparent;
+      color: white;
+
+      border-radius: 50px;
+      border: 1px solid white;
+
+      margin-top: 10px;
+    }
+
+    .mytitle > button:hover {
+      border: 2px solid white;
+    }
+
+    .mypost {
+      width: 95%;
+      max-width: 500px;
+      margin: 20px auto 0px auto;
+      box-shadow: 0px 0px 3px 0px gray;
+      padding: 20px;
+
+      display: none;
+    }
+
+    .mybtns {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      margin-top: 20px;
+    }
+
+    .mybtns > button {
+      margin-right: 10px;
+    }
+
+    .table {
+      width: 800px;
+      margin: 100px auto;
+    }
+  </style>
+  <script>
+
+
+
+    function open_box() {
+      $('#movie-box').show()
+    }
+
+    function close_box() {
+      $('#movie-box').hide()
+    }
+
+    $(document).ready(function () {
+      // HTML 문서를 로드할 때마다 실행합니다.
+      show_articles();close_box();
+    })
+
+
+
+    // 게시글 목록 보여주기
+    function show_articles() {
+      // 1. 기존 메모 내용을 지웁니다.
+      $('#board').empty();
+      // 2. 게시글 목록을 불러와서 HTML로 붙입니다.
+      $.ajax({
+        type: 'GET',
+        url: '/api/board',
+        success: function (response) {
+          // console.log(response);
+          for (let i = 0; i < response.length; i++) {
+            let post = response[i];
+            let id = post['id'];
+            let title = post['title'];
+            let writer = post['writer'];
+            let content = post['content'];
+            let createdAt = post['createdAt'];
+            addHTML(id, title, writer, content, createdAt);
+          }
+        }
+      })
+    }
+
+    function view(id){
+      window.location.href=`/board/view?id=${id}`
+    }
+
+    function addHTML(id, title, writer, content, createdAt) {
+      // 1. HTML 태그를 만듭니다.
+      let tempHtml = `<tr style=" cursor: pointer;" onclick="view('${id}')">
+                            <th scope="row">${id}</th>
+                            <td id="${id}-title" >${title}</td>
+                            <td id="${id}-content" >${content}</td>
+                            <td id="${id}-writer" >${writer}</td>
+                            <td>${createdAt}</td>
+                        </tr>`;
+      // 2. #list 에 HTML을 붙인다.
+
+      $('#list').append(tempHtml);
+    }
+
+    function isValidContents(content) {
+      if (content == '') {
+        alert('내용을 입력해주세요');
+        return false;
+      }
+      if (content.trim().length > 140) {
+        alert('공백 포함 140자 이하로 입력해주세요');
+        return false;
+      }
+      return true;
+    }
+
+    function save_article() {
+      // 1. 작성한 메모를 불러옵니다.
+      let content = $('#input_content').val();
+      let writer = $('#input_writer').val();
+      let title = $('#input_title').val();
+      // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+      if (isValidContents(content) == false) {
+        return;
+      }
+      // 4. 전달할 data JSON으로 만듭니다.
+      let data = {'writer': writer, 'content': content, 'title':title};
+      // 5. POST /api/articles 에 data를 전달합니다.
+      $.ajax({
+        type: "POST",
+        url: "/api/board",
+        contentType: "application/json", // JSON 형식으로 전달함을 알리기
+        data: JSON.stringify(data),
+        success: function (response) {
+          alert('등록 완료!');
+          window.location.reload();
+        }
+      });
+    }
+
+    // function detail(id) {
+    //     let contents = $(`#${id}-contents`).val();
+    //     let name = $(`#${id}-name`).val();
+    //     let title = $(`#${id}-title`).val();
+    //     // 4. 전달할 data JSON으로 만듭니다.
+    //     let data = {'name': name, 'contents': contents, 'title':title};
+    //     $.ajax({
+    //         type:"GET",
+    //         url: `/api/articles/${id}`,
+    //         contentType: "application/json", // JSON 형식으로 전달함을 알리기
+    //         data: JSON.stringify(data),
+    //         success: function (response) {
+    //             console.log(response);
+    //         }
+    //     })
+    // }
+  </script>
+</head>
+
+<body>
+<div class="mytitle">
+  <h1>항해 게시판 🚢⚓</h1>
+  <button onclick="open_box()">글쓰기</button>
+</div>
+<div class="mypost" id="movie-box" style="display: block;">
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="input_writer" placeholder="url">
+    <label for="floatingInput">작성자</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="input_title" placeholder="url">
+    <label for="floatingInput">제목</label>
+  </div>
+  <div class="form-floating">
+            <textarea class="form-control" placeholder="Leave a comment here" id="input_content"
+                      style="height: 70px"></textarea>
+    <label for="floatingTextarea2">내용</label>
+  </div>
+  <div class="mybtns">
+    <button onclick="save_article()" type="button" class="btn btn-dark">기록하기</button>
+    <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
+  </div>
+</div>
+
+<!-- 게시글 목록 부분-->
+<table class="table" >
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">제목</th>
+    <th scope="col">내용</th>
+    <th scope="col">작성자</th>
+    <th scope="col">작성날짜</th>
+  </tr>
+  </thead>
+  <tbody id="list">
+
+  </tbody>
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>
