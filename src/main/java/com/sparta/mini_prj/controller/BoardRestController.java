@@ -33,11 +33,11 @@ public class BoardRestController {
         return board;
     }
 
-    // 상세 게시글 목록 조회
-//    @GetMapping("/api/board/{id}")
-//    public Board getBoardDetail(@PathVariable Long id) {
-//        return boardRepository.findById(id).orElseThrow(
-//                () -> new IllegalArgumentException("null"));
-//    }
+     //상세 게시글 목록 조회
+    @GetMapping("/api/board/{id}")
+    public Board getBoardDetail(@PathVariable Long id) {
+        return boardRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("null"));
+    }
 
 }
