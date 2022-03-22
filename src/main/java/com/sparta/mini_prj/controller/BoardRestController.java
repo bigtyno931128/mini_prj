@@ -40,4 +40,12 @@ public class BoardRestController {
                 () -> new IllegalArgumentException("null"));
     }
 
+    //상세페이지 이동.
+    @RequestMapping("/board/view")
+    public ModelAndView detail(@RequestParam("id") Long id) throws Exception{
+        ModelAndView mav = new ModelAndView("/detail.html");
+
+        return mav;
+
+    }
 }
