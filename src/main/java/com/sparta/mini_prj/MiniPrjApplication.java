@@ -1,7 +1,10 @@
 package com.sparta.mini_prj;
 
+import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.annotation.PostConstruct;
@@ -20,5 +23,14 @@ public class MiniPrjApplication {
 	public void started(){
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 
+	}
+
+	@Bean
+	public FilterRegistrationBean xssEscapeServletFilter() {
+		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		registrationBean.setFilter(new XssEscapeServletFilter());
+		registrationBean.setOrder(1);  // @Order로 처리.
+		registrationBean.addUrlPatterns("/*");
+		return registrationBean;
 	}
 }
