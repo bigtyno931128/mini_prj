@@ -22,7 +22,7 @@ public class BoardRestController {
     @GetMapping("/api/board")
     public List<Board> getBoard() {
 
-        return boardRepository.findAllByOrderByModifiedAtAsc();
+        return boardRepository.findAllByOrderByModifiedAtDesc();
     }
 
     // 신규 게시글 등록
@@ -34,10 +34,10 @@ public class BoardRestController {
     }
 
     // 상세 게시글 목록 조회
-    @GetMapping("/api/board/{id}")
-    public Board getBoardDetail(@PathVariable Long id) {
-        return boardRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("null"));
-    }
+//    @GetMapping("/api/board/{id}")
+//    public Board getBoardDetail(@PathVariable Long id) {
+//        return boardRepository.findById(id).orElseThrow(
+//                () -> new IllegalArgumentException("null"));
+//    }
 
 }
