@@ -1,5 +1,6 @@
 package com.sparta.mini_prj.models;
 
+import com.sparta.mini_prj.dto.BoardRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -199,7 +199,11 @@
 <div class="mytitle">
     <h1>항해 게시판 🚢⚓</h1>
     <button onclick="open_box()">글쓰기</button>
+    <form id="my_form" method="post" action="/user/logout">
+        <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
+    </form>
 </div>
+
 <div class="mypost" id="movie-box" style="display: block;">
     <div class="form-floating mb-3">
         <input type="text" class="form-control" id="input_writer" placeholder="url">
