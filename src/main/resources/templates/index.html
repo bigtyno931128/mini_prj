@@ -1,4 +1,12 @@
-<html lang="en">
+
+<!doctype html>
+
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -79,6 +87,11 @@
         .table {
             width: 800px;
             margin: 100px auto;
+        }
+        .login{
+            margin-top: 10px;
+            color: white;
+            margin-left: 1300px
         }
     </style>
     <script>
@@ -199,11 +212,15 @@
 <div class="mytitle">
     <h1>항해 게시판 🚢⚓</h1>
     <button onclick="open_box()">글쓰기</button>
-    <form id="my_form" method="post" action="/user/logout">
-        <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
-    </form>
+    <div class="login" sec:authorize-expr="isAuthenticated()">
+        <h2><a sec:authentication="Principal.username">님 환영합니다</a></h2>
+        <a th:href="@{/user/login}">로그아웃</a>
+    </div>
+    <div class="login" sec:authorize-expr="isAnonymous()" >
+        <a th:href="@{/user/login}">로그인</a>
+        <a th:href="@{/user/signup}">회원가입</a>
+    </div>
 </div>
-
 <div class="mypost" id="movie-box" style="display: block;">
     <div class="form-floating mb-3">
         <input type="text" class="form-control" id="input_writer" placeholder="url">
@@ -236,13 +253,7 @@
     </tr>
     </thead>
     <tbody id="list">
-
     </tbody>
 </table>
-
-</div>
-
-</div>
-
 </body>
 </html>
