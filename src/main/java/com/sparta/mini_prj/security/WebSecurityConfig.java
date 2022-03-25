@@ -54,10 +54,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .failureUrl("/user/login?error")
                     .permitAll()
                 .and()
-// [로그아웃 기능]
-                .logout()
-// 로그아웃 처리 URL
-                .logoutUrl("/user/logout")
-                .permitAll();
+    // [로그아웃 기능]
+                    .logout()
+    // 로그아웃 처리 URL
+                    .logoutUrl("/user/logout")
+                    .permitAll();
     }
 }
