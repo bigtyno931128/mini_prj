@@ -1,8 +1,5 @@
 package com.sparta.mini_prj.service;
 
-
-
-
 import com.sparta.mini_prj.dto.SignupRequestDto;
 import com.sparta.mini_prj.models.User;
 import com.sparta.mini_prj.models.UserRoleEnum;
@@ -10,7 +7,11 @@ import com.sparta.mini_prj.repositoty.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -49,4 +50,13 @@ public class UserService {
         User user = new User(username, password, email, role);
         userRepository.save(user);
     }
+
+//    /* 회원가입 시, 유효성 체크 */
+//    public Map<String, String> validateHandling(Errors errors) {
+//        Map<String, String> validatorResult = new HashMap<>();
+//        for (FieldError error : errors.getFieldErrors()) {
+//            String validKeyName = String.format("valid_%s", error.getField());
+//            validatorResult.put(validKeyName, error.getDefaultMessage());
+//        } return validatorResult;
+//    }
 }
