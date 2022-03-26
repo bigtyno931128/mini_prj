@@ -1,7 +1,9 @@
 package com.sparta.mini_prj.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.mini_prj.dto.SignupRequestDto;
+import com.sparta.mini_prj.service.KakaoUserService;
 import com.sparta.mini_prj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -20,12 +24,14 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final KakaoUserService kakaoUserService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, KakaoUserService kakaoUserService) {
         this.userService = userService;
+        this.kakaoUserService = kakaoUserService;
     }
-
+    
     // 회원 로그인 페이지
     @GetMapping("/user/login")
     public String login() {
@@ -58,5 +64,12 @@ public class UserController {
             return "signup";
         }
         return "redirect:/user/login";
+    }
+    
+    //kakao userinfo 로 로그인과 회원가입
+    @GetMapping("/user/kakao/callback")
+    public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+        kakaoUserService.kakaoLogin(code);
+        return "redirect:/";
     }
 }

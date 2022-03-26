@@ -1,7 +1,7 @@
 package com.sparta.mini_prj.controller;
 
 
-import com.sparta.mini_prj.security.UserDetailsImpl;
+import com.sparta.mini_prj.service.UserDetailsImpl;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 

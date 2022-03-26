@@ -1,8 +1,9 @@
-package com.sparta.mini_prj.security;
+package com.sparta.mini_prj.service;
 
 
 import com.sparta.mini_prj.models.User;
 import com.sparta.mini_prj.repositoty.UserRepository;
+import com.sparta.mini_prj.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
