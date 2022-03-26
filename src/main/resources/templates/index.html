@@ -214,7 +214,7 @@
     <button onclick="open_box()">글쓰기</button>
     <div class="login" sec:authorize-expr="isAuthenticated()">
         <h2><a sec:authentication="Principal.username">님 환영합니다</a></h2>
-        <a th:href="@{/user/login}">로그아웃</a>
+        <a th:href="@{/user/logout}">로그아웃</a>
     </div>
     <div class="login" sec:authorize-expr="isAnonymous()" >
         <a th:href="@{/user/login}">로그인</a>
