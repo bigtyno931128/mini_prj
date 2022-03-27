@@ -29,18 +29,21 @@ public class UserService {
     }
 
     public void registerUser(SignupRequestDto requestDto) {
-// 회원 ID 중복 확인
+        // 회원 ID 중복 확인
         String username = requestDto.getUsername();
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자 ID 가 존재합니다.");
         }
-
-// 패스워드 암호화
+        // 비밀번호 재확인
+        if(!requestDto.getPassword().equals(requestDto.getPassword2())){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        // 패스워드 암호화
         String password = passwordEncoder.encode(requestDto.getPassword());
         String email = requestDto.getEmail();
 
-// 사용자 ROLE 확인
+        // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;
         if (requestDto.isAdmin()) {
             if (!requestDto.getAdminToken().equals(ADMIN_TOKEN)) {

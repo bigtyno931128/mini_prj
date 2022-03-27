@@ -23,6 +23,9 @@ public class SignupRequestDto {
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     private String email;
 
+    @NotBlank
+    private String password2;
+
     private boolean admin = false;
     private String adminToken = "";
 }

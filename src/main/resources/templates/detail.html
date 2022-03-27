@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -23,6 +23,7 @@
             crossorigin="anonymous"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script th:src="@{/js/comment.js}"></script>
     <title>게시판</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
@@ -89,7 +90,37 @@
         <p id="content">내용입니다. </p>
     </div>
     <button onclick="back()" class="btn btn-primary">돌아가기</button>
-</div>
+    <div class="card mb-2 mt-5">
+
+        <div class="card-header bg-light">
+            <i class="fa fa-comment fa"></i> 댓글
+        </div>
+        <form>
+            <div class="card-body">
+                <input type="hidden" id="boardId" th:value="${board.id}">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <textarea class="form-control" id="reply-content" rows="1"></textarea>
+                        <button id="reply-btn-save" type="button" class="btn btn-dark mt-3">등록</button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    <br/>
+    <div class="card">
+        <div class="card-header">댓글</div>
+        <ul id="reply--box" class="list-group" th:each="reply : ${board.commentList}">
+            <li th:id="'reply--' + ${comment.id}" class="list-group-item d-flex justify-content-between">
+                <div th:text="${comment.content}"></div>
+                <div class="d-flex">
+                    <span class="text-monospace mr-1">작성자: &nbsp;</span><div class="text-monospace mr-1" th:text="${comment.user.username}"></div>
+                    <button class="badge btn-warning">수정</button><span> | </span>
+                    <button class="badge btn-danger">삭제</button>
+                </div>
+            </li>
+        </ul>
+    </div>
 </body>
 
 </html>

@@ -3,6 +3,8 @@ package com.sparta.mini_prj.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
+@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -28,12 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-// 회원 관리 처리 API (POST /user/**) 에 대해 CSRF 무시
         http.csrf().disable();
-//                .ignoringAntMatchers("/user/**");
 
         http.authorizeRequests()
                 .antMatchers("/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/board").permitAll()
 // image 폴더를 login 없이 허용
                 .antMatchers("/images/**").permitAll()
 // css 폴더를 login 없이 허용
@@ -57,10 +59,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
     // [로그아웃 기능]
                     .logout()
-    // 로그아웃 처리 URL
+    // 로그아웃 요청 처리 URL
                     .logoutUrl("/user/logout")
-                    .logoutSuccessUrl("/")
-
-                    .permitAll();
+                    .permitAll()
+                .and()
+                    .exceptionHandling()
+    // "접근 불가" 페이지 URL 설정
+                    .accessDeniedPage("/forbidden.html");
+        //중복 로그인
+        http.sessionManagement()
+                .maximumSessions(1) //세션 최대사용자수 1
+                .maxSessionsPreventsLogin(false); // 중복 로그인 시에 이전 사용자 로그아웃.
     }
 }
