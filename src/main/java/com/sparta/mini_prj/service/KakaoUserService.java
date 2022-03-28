@@ -4,7 +4,7 @@ package com.sparta.mini_prj.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.mini_prj.models.KakaoUserInfoDto;
+import com.sparta.mini_prj.dto.KakaoUserInfoDto;
 import com.sparta.mini_prj.models.User;
 import com.sparta.mini_prj.models.UserRoleEnum;
 import com.sparta.mini_prj.repositoty.UserRepository;

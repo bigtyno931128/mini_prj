@@ -60,7 +60,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // 로그아웃 처리 URL
                     .logoutUrl("/user/logout")
                     .logoutSuccessUrl("/")
-
                     .permitAll();
+        //중복 로그인 방지
+        http.sessionManagement()
+                .maximumSessions(1) //세션 최대 허용 수
+                .maxSessionsPreventsLogin(false); // false이면 중복 로그인하면 이전 로그인이 풀린다.
     }
 }

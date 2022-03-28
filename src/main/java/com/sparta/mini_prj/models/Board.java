@@ -23,11 +23,17 @@ public class Board extends Timestamped{
     @Column(nullable = false)
     private String content;
 
+
     // 게시글 작성 시에 이용 .
     public Board(BoardRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.writer = requestDto.getWriter();
         this.content = requestDto.getContent();
+    }
 
+    public void update(BoardRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.writer = requestDto.getTitle();
+        this.content = requestDto.getContent();
     }
 }

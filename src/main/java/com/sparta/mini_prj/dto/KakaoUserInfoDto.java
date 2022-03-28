@@ -1,4 +1,4 @@
-package com.sparta.mini_prj.models;
+package com.sparta.mini_prj.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <!-- Required meta tags -->
@@ -28,6 +28,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
           rel="stylesheet">
     <script>
+
+
         function getParameter(name) {
             name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
             var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -40,7 +42,10 @@
         })
 
         let id = getParameter("id");
+
         function listing() {
+            $('#edit-area').hide();
+            $('#submit').hide();
             $.ajax({
                 type: "GET",
                 url: `/api/board/${id}`,
@@ -51,6 +56,65 @@
                     $('#writer').text(response['writer']);
                     $('#content').text(response['content']);
                     $('#createdAt').text(response['createdAt']);
+                }
+            });
+        }
+
+        function editBoard() {
+
+            showEdits();
+            // let content = $('#textarea').text();
+
+        }
+
+        function showEdits() {
+            $('#edit-area').show();
+            $('#submit').show();
+            $('#content').hide();
+            $('#edit').hide();
+            $('#comment').hide();
+            $('#delete').hide();
+        }
+
+        function isPostEmpty(title, content) {
+            return !(title === "" || content === "");
+        }
+
+        function submitEdit() {
+            let writer = $('#writer').text();
+            // 1. 작성한 메모를 불러옵니다.
+            let title = $('#title').text();
+            let content = $('#textarea').val();
+
+            // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+            if (!isPostEmpty(content)) {
+                // alert 창 띄우기
+                alert("필수 값 입력 오류!!")
+                return;
+            }
+            let data = {'content': content,'writer':writer,'title':title};
+            $.ajax({
+                type: "PUT",
+                url: `/api/board/${id}`,
+                contentType: "application/json", // JSON 형식으로 전달함을 알리기
+                data: JSON.stringify(data),
+                success: function (response) {
+                    console.log(response)
+                    console.log(data)
+                    alert('게시물이 성공적으로 변경되었습니다.');
+                    window.location.href = '/'
+                }
+            });
+        }
+
+        function deleteBoard() {
+            $.ajax({
+                type: "DELETE",
+                url: `/api/board/${id}`,
+                contentType: "application/json",
+                success: function (response) {
+                    alert('게시글 삭제에 성공하였습니다.');
+                    window.location.href = '/'
                 }
             });
         }
@@ -88,8 +152,26 @@
     <div class="form-group comment-area">
         <p id="content">내용입니다. </p>
     </div>
-    <button onclick="back()" class="btn btn-primary">돌아가기</button>
-</div>
+    <!-- contents 조회/수정 영역-->
+    <div class="contents">
+        <div id="contents" class="text">
+        </div>
+        <div id="edit-area" class="edit">
+            <textarea id="textarea" class="te-edit" name=""  cols="30" rows="5"></textarea>
+            <button onclick="submitEdit()" class="btn btn-primary">수정하기</button>
+        </div>
+    </div>
+
+    <div sec:authorize-expr="isAnonymous()">
+        <button onclick="back()" class="btn btn-primary">돌아가기</button>
+    </div>
+    <div sec:authorize-expr="isAuthenticated()">
+        <button id="comment" onclick="" class="btn btn-primary">댓글 등록</button>
+        <div th:if="${#authentication.name} == ${writer}">
+            <button id="edit" onclick="editBoard()" class="btn btn-primary">수정</button>
+            <button id="delete" onclick="deleteBoard()" class="btn btn-primary">삭제</button>
+        </div>
+    </div>
 </body>
 
 </html>

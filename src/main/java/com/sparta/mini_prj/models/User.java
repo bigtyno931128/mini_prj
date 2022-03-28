@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Setter
 @Getter // get 함수를 일괄적으로 만들어줍니다.
@@ -48,5 +49,12 @@ public class User {
         this.email = email;
         this.role = role;
         this.kakaoId = kakaoId;
+    }
+
+    public User(String username, String password, Optional<User> email, UserRoleEnum role) {
+        this.username = username;
+        this.password = password;
+        this.email = String.valueOf(email);
+        this.role = role;
     }
 }
