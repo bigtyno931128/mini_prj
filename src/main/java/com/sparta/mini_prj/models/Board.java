@@ -1,10 +1,12 @@
 package com.sparta.mini_prj.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sparta.mini_prj.dto.BoardRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -16,13 +18,19 @@ public class Board extends Timestamped{
     @Id
     private Long Id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String title;
+
     @Column(nullable = false)
     private String writer;
-    @Column(nullable = false)
+
+    @Column(nullable = false, length = 500)
     private String content;
 
+    @OrderBy("id desc")
+    @JsonIgnoreProperties({"board"})
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
+    private List<Comment> commentList;
 
     // 게시글 작성 시에 이용 .
     public Board(BoardRequestDto requestDto) {
@@ -33,7 +41,7 @@ public class Board extends Timestamped{
 
     public void update(BoardRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.writer = requestDto.getTitle();
+        this.writer = requestDto.getWriter();
         this.content = requestDto.getContent();
     }
 }

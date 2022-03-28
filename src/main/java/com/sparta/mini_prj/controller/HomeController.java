@@ -2,7 +2,9 @@ package com.sparta.mini_prj.controller;
 
 
 import com.sparta.mini_prj.models.Board;
+import com.sparta.mini_prj.models.Comment;
 import com.sparta.mini_prj.repositoty.BoardRepository;
+import com.sparta.mini_prj.repositoty.CommentRepository;
 import com.sparta.mini_prj.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,10 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Controller
 public class HomeController {
 
+    private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
     //메인 페이지
     @GetMapping("/")
@@ -32,8 +37,8 @@ public class HomeController {
     public String detail(@RequestParam("id") Long id,Model model) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("null"));
-        model.addAttribute("writer",board.getWriter());
-       ;
+        model.addAttribute("board",board);
+
         return "detail";
     }
 }

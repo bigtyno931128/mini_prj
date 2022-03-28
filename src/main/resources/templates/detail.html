@@ -28,8 +28,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
           rel="stylesheet">
     <script>
-
-
+        function hideComment() {
+            $('#comments').hide()
+        }
         function getParameter(name) {
             name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
             var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -37,11 +38,13 @@
             return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, ""));
         }
 
+        let id = getParameter("id");
+
         $(document).ready(function () {
-            listing()
+            listing();
         })
 
-        let id = getParameter("id");
+
 
         function listing() {
             $('#edit-area').hide();
@@ -51,7 +54,7 @@
                 url: `/api/board/${id}`,
                 data: {},
                 success: function (response) {
-                    console.log(response)
+
                     $('#title').text(response['title']);
                     $('#writer').text(response['writer']);
                     $('#content').text(response['content']);
@@ -61,13 +64,6 @@
         }
 
         function editBoard() {
-
-            showEdits();
-            // let content = $('#textarea').text();
-
-        }
-
-        function showEdits() {
             $('#edit-area').show();
             $('#submit').show();
             $('#content').hide();
@@ -75,6 +71,7 @@
             $('#comment').hide();
             $('#delete').hide();
         }
+
 
         function isPostEmpty(title, content) {
             return !(title === "" || content === "");
@@ -99,8 +96,6 @@
                 contentType: "application/json", // JSON 형식으로 전달함을 알리기
                 data: JSON.stringify(data),
                 success: function (response) {
-                    console.log(response)
-                    console.log(data)
                     alert('게시물이 성공적으로 변경되었습니다.');
                     window.location.href = '/'
                 }
@@ -115,6 +110,23 @@
                 success: function (response) {
                     alert('게시글 삭제에 성공하였습니다.');
                     window.location.href = '/'
+                }
+            });
+        }
+
+        //댓글 작성
+        function save_comment(){
+            //let boardId = id
+            let content = $('#input_content').val();
+            let data = {'content':content};
+            $.ajax({
+                type: "POST",
+                url: `/api/board/${id}/comment`,
+                contentType: "application/json", // JSON 형식으로 전달함을 알리기
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert('등록 완료!');
+                    window.location.reload();
                 }
             });
         }
@@ -161,15 +173,29 @@
             <button onclick="submitEdit()" class="btn btn-primary">수정하기</button>
         </div>
     </div>
-
+    <div id="commenting-area">
+        <span>댓글 작성</span>
+        <textarea id="input_content" cols="95" rows="3"></textarea>
+            <button onclick="save_comment()" type="button" class="btn btn-dark">댓글 저장하기</button>
+            <button onclick="back()" type="button" class="btn btn-outline-dark">닫기</button>
+    </div>
+        <div id="comment-list">
+            <th:block th:each="comm:${board.commentList}">
+                <div id="comment_each">
+                    <div id="comment-writer">작성자 : <span th:text="${comm.writer}"></span></div>
+                    <div id="comment-content"><span th:text="${comm.content}"></span></div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
     <div sec:authorize-expr="isAnonymous()">
         <button onclick="back()" class="btn btn-primary">돌아가기</button>
     </div>
     <div sec:authorize-expr="isAuthenticated()">
-        <button id="comment" onclick="" class="btn btn-primary">댓글 등록</button>
-        <div th:if="${#authentication.name} == ${writer}">
-            <button id="edit" onclick="editBoard()" class="btn btn-primary">수정</button>
-            <button id="delete" onclick="deleteBoard()" class="btn btn-primary">삭제</button>
+        <div th:if="${#authentication.name} == ${board.writer}">
+            <button id="edit" onclick="editBoard()" class="btn btn-primary">게시글 수정</button>
+            <button id="delete" onclick="deleteBoard()" class="btn btn-primary">게시글 삭제</button>
         </div>
     </div>
 </body>

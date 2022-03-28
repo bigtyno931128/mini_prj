@@ -127,8 +127,8 @@
                         let id = post['id'];
                         let title = post['title'];
                         let writer = post['writer'];
-                        let content = post['content'];
-                        let createdAt = post['createdAt'];
+                        let content = post['content'].split('T')[0];
+                        let createdAt = post['createdAt'].split('T')[0];
                         addHTML(id, title, writer, content, createdAt);
                     }
                 }
@@ -224,10 +224,6 @@
     </div>
 </div>
 <div class="mypost" id="movie-box" style="display: block;">
-<!--    <div class="form-floating mb-3">-->
-<!--        <input type="text" class="form-control" id="input_writer" placeholder="url">-->
-<!--        <label for="floatingInput">작성자</label>-->
-<!--    </div>-->
     <div class="form-floating mb-3">
         <input type="text" class="form-control" id="input_title" placeholder="url">
         <label for="floatingInput">제목</label>
