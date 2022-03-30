@@ -58,7 +58,7 @@
                     $('#title').text(response['title']);
                     $('#writer').text(response['writer']);
                     $('#content').text(response['content']);
-                    $('#createdAt').text(response['createdAt']);
+                    $('#createdAt').text(response['createdAt'].split('T')[0]);
                 }
             });
         }
@@ -193,6 +193,11 @@
             padding: 20px;
             border-radius: 10px;
         }
+        .comment_content{
+            background-color: lightgray;
+            padding: 20px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 
@@ -210,29 +215,41 @@
     <div class="form-group comment-area">
         <p id="content">내용입니다. </p>
     </div>
+
     <!-- contents 조회/수정 영역-->
     <div class="contents">
         <div id="contents" class="text">
         </div>
         <div id="edit-area" class="edit">
-            <textarea id="textarea" class="te-edit" name=""  cols="30" rows="5"></textarea>
-            <button onclick="submitEdit()" class="btn btn-primary">수정하기</button>
+            <textarea id="textarea" class="te-edit" name=""  cols="30" rows="5" placeholder="게시글 수정"></textarea>
+            <button onclick="submitEdit()" class="btn btn-primary">게시글 수정하기</button>
         </div>
     </div>
-    <div id="commenting-area">
-        <span>댓글 작성</span>
+
+    <div sec:authorize-expr="isAnonymous()">
+        <button onclick="back()" class="btn btn-primary">돌아가기</button>
+    </div>
+    <div sec:authorize-expr="isAuthenticated()">
+        <div th:if="${#authentication.name} == ${board.writer}">
+            <button id="edit" onclick="editBoard()" class="btn btn-primary">게시글 수정</button>
+            <button id="delete" onclick="deleteBoard()" class="btn btn-primary">게시글 삭제</button>
+        </div>
+    </div>
+    <div id="commenting-area" sec:authorize-expr="isAuthenticated()">
+
         <textarea id="input_content" cols="95" rows="3"></textarea>
             <button onclick="save_comment()" type="button" class="btn btn-dark">댓글 저장하기</button>
             <button onclick="back()" type="button" class="btn btn-outline-dark">닫기</button>
-            <span th:text="${board.commentList}"></span>
+
     </div>
         <div id="comment-list">
             <th:block th:each="comm:${board.commentList}">
                 <div id="comment_each">
-                    <div id="comment-writer">작성자 : <span th:text="${comm.writer}"></span></div>
-                    <div  th:id="*{comm.id + '-comment_comment'}" class="comment_content"><span th:text="${comm.content}"></span></div>
+                    <h5>게시글의 댓글입니다.</h5>
+                    <div id="comment-writer">댓글작성자 : <span th:text="${comm.writer}"></span></div>
+                    <div th:id="*{comm.id + '-comment_comment'}" class="comment_content"><span th:text="${comm.content}"></span></div>
                     <div th:id="*{comm.id + '-edit-comment-area'}" class="edit edit-comment-area">
-                        <textarea th:id="*{comm.id + '-text-comment-area'}" class="te-edit text-comment-area" cols="95" rows="2"></textarea>
+                        <textarea  th:if="${#authentication.name}==${comm.writer}"  th:id="*{comm.id + '-text-comment-area'}" class="te-edit text-comment-area" cols="95" rows="2" placeholder="댓글수정"></textarea>
                     </div>
                     <div id="comment-date"><span th:text='${comm.createdAt.toString().split("T")[0]}'></span></div>
 
@@ -243,15 +260,7 @@
             </th:block>
         </div>
     </div>
-    <div sec:authorize-expr="isAnonymous()">
-        <button onclick="back()" class="btn btn-primary">돌아가기</button>
-    </div>
-    <div sec:authorize-expr="isAuthenticated()">
-        <div th:if="${#authentication.name} == ${board.writer}">
-            <button id="edit" onclick="editBoard()" class="btn btn-primary">게시글 수정</button>
-            <button id="delete" onclick="deleteBoard()" class="btn btn-primary">게시글 삭제</button>
-        </div>
-    </div>
+
 </body>
 
 </html>

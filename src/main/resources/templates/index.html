@@ -143,7 +143,7 @@
             // 1. HTML 태그를 만듭니다.
             let tempHtml = `<tr style=" cursor: pointer;" onclick="view('${id}')">
                             <th scope="row"></th>
-                            <td id="${id}-title" >${title}</td>
+                            <td id="${id}-title" > ${title}</td>
                             <td id="${id}-content" >${content}</td>
                             <td id="${id}-writer" >${writer}</td>
                             <td>${createdAt}</td>
@@ -225,7 +225,7 @@
 </div>
 <div class="mypost" id="movie-box" style="display: block;">
     <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="input_title" placeholder="url">
+        <input type="text" class="form-control" id="input_title" placeholder="제목">
         <label for="floatingInput">제목</label>
     </div>
     <div class="form-floating">

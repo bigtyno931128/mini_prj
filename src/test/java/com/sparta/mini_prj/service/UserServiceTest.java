@@ -1,26 +1,15 @@
 package com.sparta.mini_prj.service;
 
 import com.sparta.mini_prj.dto.SignupRequestDto;
-import com.sparta.mini_prj.models.Board;
-import com.sparta.mini_prj.models.User;
-import com.sparta.mini_prj.models.UserRoleEnum;
 import com.sparta.mini_prj.repositoty.UserRepository;
 import com.sparta.mini_prj.validator.SignupValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
-
-import static com.sparta.mini_prj.models.UserRoleEnum.USER;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
-@DisplayName("서비스테스트")
+@DisplayName("서비스 테스트")
 class UserServiceTest {
 
     @Mock
