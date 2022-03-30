@@ -245,8 +245,8 @@
         <div id="comment-list">
             <th:block th:each="comm:${board.commentList}">
                 <div id="comment_each">
-                    <h5>게시글의 댓글입니다.</h5>
-                    <div id="comment-writer">댓글작성자 : <span th:text="${comm.writer}"></span></div>
+                    <h5>댓글!</h5>
+                    <div id="comment-writer">작성자: <span th:text="${comm.writer}"></span></div>
                     <div th:id="*{comm.id + '-comment_comment'}" class="comment_content"><span th:text="${comm.content}"></span></div>
                     <div th:id="*{comm.id + '-edit-comment-area'}" class="edit edit-comment-area">
                         <textarea  th:if="${#authentication.name}==${comm.writer}"  th:id="*{comm.id + '-text-comment-area'}" class="te-edit text-comment-area" cols="95" rows="2" placeholder="댓글수정"></textarea>

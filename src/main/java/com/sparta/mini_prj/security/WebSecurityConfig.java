@@ -40,6 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**").permitAll()
 // 회원 관리 처리 API 전부를 login 없이 허용
                 .antMatchers("/user/**").permitAll()
+                .antMatchers("/user/signup").permitAll()
+                .antMatchers("/api/board/**").permitAll()
+                .antMatchers("/user/kakao/callback").permitAll()
 // 그 외 어떤 요청이든 '인증'
                 .anyRequest().authenticated()
                 .and()
@@ -61,6 +64,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutUrl("/user/logout")
                     .logoutSuccessUrl("/")
                     .permitAll();
+
+                // "접근 불가" 페이지 URL 설정
+
         //중복 로그인 방지
         http.sessionManagement()
                 .maximumSessions(1) //세션 최대 허용 수

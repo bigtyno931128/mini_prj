@@ -22,7 +22,7 @@ public class CommentController {
     private final BoardRepository boardRepository;
     private final CommentService commentService;
     //댓글 등록
-    // 신규 게시글 등록
+
 
     @PostMapping("/api/board/{id}/comment")
     public Comment createComment(@RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
