@@ -2,10 +2,12 @@ package com.sparta.mini_prj.dto;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+@NoArgsConstructor
 @Setter
 @Getter
 @Data
@@ -28,4 +30,11 @@ public class SignupRequestDto {
 
     private boolean admin = false;
     private String adminToken = "";
+
+    public SignupRequestDto(String username, String email, String password, String password2) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.password2 = password2;
+    }
 }

@@ -17,8 +17,6 @@ public class BoardRestController {
 
     private final BoardRepository boardRepository;
     private final BoardService boardService;
-//    private final CommentController commentController;
-//    private final CommentRepository commentRepository;
 
     // 전체 게시글 목록 조회
     @GetMapping("/api/board")
@@ -57,30 +55,5 @@ public class BoardRestController {
         boardRepository.deleteById(id);
     }
 
-    //상세 페이지
-//    @GetMapping("/board/view/{id}")
-//    public String detail(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//
-//        //게시글 넘기기
-//        Board board = boardRepository.findById(id).orElseThrow(
-//                () -> new IllegalArgumentException("null"));
-//
-//        model.addAttribute("board", board);
-//
-//        //댓글 넘기기
-//        List<Comment> comment = commentRepository.findAllByContentOrderByCreatedAtDesc(id);
-//        if (comment.size() != 0){
-//            model.addAttribute("commentResult", comment);
-//        } else {
-//            model.addAttribute("commentResult", "NoValue");
-//        }
-//
-//        // 로그인 아이디 넘기기
-//        if (userDetails != null) {
-//            model.addAttribute("loginUsername", userDetails.getUsername());
-//        } else {
-//            model.addAttribute("loginUsername", null);
-//        }
-//        return "detail";
-//    }
+
 }

@@ -1,5 +1,6 @@
 package com.sparta.mini_prj.models;
 
+import com.sparta.mini_prj.dto.SignupRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,13 +37,14 @@ public class User {
     @Column(unique = true)
     private Long kakaoId;
 
-    public User(String username, String password, String email, UserRoleEnum role) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-    }
-
+//    public User(String username, String password, String email, UserRoleEnum role) {
+//        this.username = username;
+//        this.password = password;
+//        this.email = email;
+//        this.role = role;
+//    }
+    
+    //kakao 로그인 유저
     public User(String username, String password, String email, UserRoleEnum role, Long kakaoId) {
         this.username = username;
         this.password = password;
@@ -50,11 +52,22 @@ public class User {
         this.role = role;
         this.kakaoId = kakaoId;
     }
-
+    
+    //일반 유저
     public User(String username, String password, Optional<User> email, UserRoleEnum role) {
         this.username = username;
         this.password = password;
         this.email = String.valueOf(email);
         this.role = role;
     }
+
+    //test
+    public User(String username, String password, String email, UserRoleEnum role) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
+
+
 }

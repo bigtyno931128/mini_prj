@@ -13,6 +13,4 @@ public class BoardRequestDto {
     private String writer;
     private String content;
 
-    public BoardRequestDto(String title, String writer, String content) {
-    }
 }
