@@ -1,16 +1,15 @@
 package com.sparta.mini_prj.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@Getter
 @Setter
-public class BoardRequestDto {
+@Getter
+public class CommentRequestDto{
 
-    private String title;
     private String writer;
+    private Long boardId;
     private String content;
+
 
 }

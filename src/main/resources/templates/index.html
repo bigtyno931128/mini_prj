@@ -1,4 +1,12 @@
-<html lang="en">
+
+<!doctype html>
+
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -80,6 +88,11 @@
             width: 800px;
             margin: 100px auto;
         }
+        .login{
+            margin-top: 10px;
+            color: white;
+            margin-left: 1300px
+        }
     </style>
     <script>
 
@@ -114,8 +127,8 @@
                         let id = post['id'];
                         let title = post['title'];
                         let writer = post['writer'];
-                        let content = post['content'];
-                        let createdAt = post['createdAt'];
+                        let content = post['content'].split('T')[0];
+                        let createdAt = post['createdAt'].split('T')[0];
                         addHTML(id, title, writer, content, createdAt);
                     }
                 }
@@ -129,7 +142,7 @@
         function addHTML(id, title, writer, content, createdAt) {
             // 1. HTML 태그를 만듭니다.
             let tempHtml = `<tr style=" cursor: pointer;" onclick="view('${id}')">
-                            <th scope="row">${id}</th>
+                            <th scope="row"></th>
                             <td id="${id}-title" >${title}</td>
                             <td id="${id}-content" >${content}</td>
                             <td id="${id}-writer" >${writer}</td>
@@ -155,14 +168,14 @@
         function save_article() {
             // 1. 작성한 메모를 불러옵니다.
             let content = $('#input_content').val();
-            let writer = $('#input_writer').val();
+          //  let writer = $('#input_writer').val();
             let title = $('#input_title').val();
             // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
             if (isValidContents(content) == false) {
                 return;
             }
             // 4. 전달할 data JSON으로 만듭니다.
-            let data = {'writer': writer, 'content': content, 'title': title};
+            let data = {'content': content, 'title': title};
             // 5. POST /api/articles 에 data를 전달합니다.
             $.ajax({
                 type: "POST",
@@ -198,17 +211,19 @@
 <body>
 <div class="mytitle">
     <h1>항해 게시판 🚢⚓</h1>
-    <button onclick="open_box()">글쓰기</button>
-    <form id="my_form" method="post" action="/user/logout">
-        <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
-    </form>
-</div>
-
-<div class="mypost" id="movie-box" style="display: block;">
-    <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="input_writer" placeholder="url">
-        <label for="floatingInput">작성자</label>
+    <div sec:authorize-expr="isAuthenticated()">
+        <button onclick="open_box()">글쓰기</button>
     </div>
+    <div class="login" sec:authorize-expr="isAuthenticated()">
+        <h2><a sec:authentication="Principal.username">님 환영합니다</a></h2>
+        <a th:href="@{/user/logout}">로그아웃</a>
+    </div>
+    <div class="login" sec:authorize-expr="isAnonymous()" >
+        <a th:href="@{/user/login}">로그인</a>
+        <a th:href="@{/user/signup}">회원가입</a>
+    </div>
+</div>
+<div class="mypost" id="movie-box" style="display: block;">
     <div class="form-floating mb-3">
         <input type="text" class="form-control" id="input_title" placeholder="url">
         <label for="floatingInput">제목</label>
@@ -236,13 +251,7 @@
     </tr>
     </thead>
     <tbody id="list">
-
     </tbody>
 </table>
-
-</div>
-
-</div>
-
 </body>
 </html>

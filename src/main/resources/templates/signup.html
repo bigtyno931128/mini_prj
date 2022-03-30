@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <meta charset="UTF-8">
+    <title>회원가입 페이지</title>
+    <script>
+        function onclickAdmin() {
+// Get the checkbox
+            var checkBox = document.getElementById("admin-check");
+// Get the output text
+            var box = document.getElementById("admin-token");
+
+// If the checkbox is checked, display the output text
+            if (checkBox.checked == true){
+                box.style.display = "block";
+            } else {
+                box.style.display = "none";
+            }
+        }
+        //비밀번호 재확인
+        // function pw_check(){
+        //     var pw1 = document.getElementById('password_1');
+        //     var pw2 = document.getElementById('password_2');
+        //     var check = document.getElementById('checkMsg');
+        //     var true_color = "#00ff00";
+        //     var false_color ="#ff0000"
+        //     if(pw1.value == pw2.value){
+        //         check.style.color = true_color;
+        //         check.innerHTML = "비밀번호 일치";
+        //     }else{
+        //         check.style.color = false_color;
+        //         check.innerHTML = "비밀번호 불일치";
+        //     }
+        // }
+
+    </script>
+</head>
+<body>
+<div id="login-form">
+    <form class="sign-up" th:action="@{/user/signup}" method="post">
+        <h2 class="heading mb-4">회원가입</h2>
+        <div class="form-group fone mt-2"> <i class="fas fa-user"></i>
+            <input type="text" name="username" class="form-control" placeholder="username">
+            <span th:style="${'color: red; font-size:11px;'}" th:text="${valid_username}"></span>
+
+        </div>
+        <div class="form-group fone mt-2"> <i class="fas fa-envelope"></i>
+            <input type="text" name="email" class="form-control" placeholder="Email" id="">
+            <span th:style="${'color: red; font-size:11px;'}" th:text="${valid_email}"></span>
+        </div>
+        <div class="form-group fone mt-2"> <i class="fas fa-lock"></i>
+            <input type="password" name="password" class="form-control" placeholder="Password" id="password_1">
+            <div class="image"><i class="fas fa-eye"></i></div>
+            <span th:style="${'color: red; font-size:11px;'}" th:text="${valid_password}"></span>
+        </div>
+        <div class="form-group fone mt-2"> <i class="fas fa-lock"></i>
+            <input type="password" name="password2" class="form-control" placeholder="Password" id="password_2">
+            <div class="image"><i class="fas fa-eye"></i></div>
+            <span th:style="${'color: red; font-size:11px;'}" th:text="${valid_password}"></span>
+            <span th:style="${'color: red; font-size:11px;'}" th:text="${errorMessage}"></span>
+        </div>
+
+        <div>
+            <input id="admin-check" type="checkbox" name="admin" onclick="onclickAdmin()" style="margin-top: 40px;">관리자
+            <input id="admin-token" type="password" name="adminToken" placeholder="관리자 암호" class="login-input-box" style="display:none">
+        </div>
+        <button id="login-id-submit"onclick="pw_check()">회원 가입</button>
+    </form>
+</div>
+</body>
+</html>

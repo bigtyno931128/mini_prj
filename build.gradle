@@ -35,6 +35,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// Thymeleaf (뷰 템플릿 엔진)
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	//유효성 검사
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.6'
+	//시큐리티 태그 라이브러리
+	implementation 'org.springframework.security:spring-security-taglibs'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 }
 
 tasks.named('test') {
